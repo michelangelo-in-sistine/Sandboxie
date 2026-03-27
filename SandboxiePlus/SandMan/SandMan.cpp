@@ -4817,7 +4817,7 @@ void CSandMan::OnAbout()
 
 		QString AboutCaption = tr(
 			"<h3>About Sandboxie-Plus</h3>"
-			"<p>Version %1</p>"
+			"<p>Version %1(cr.ed by lvhf)</p>"
 			"<p>" MY_COPYRIGHT_STRING "</p>"
 		).arg(theGUI->GetVersion(true));
 
