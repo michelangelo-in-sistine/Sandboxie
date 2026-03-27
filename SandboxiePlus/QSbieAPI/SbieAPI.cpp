@@ -43,6 +43,8 @@ typedef long NTSTATUS;
 
 #include "../../SandboxieTools/ImBox/ImBox.h"
 
+#include "../../Sandboxie/core/drv/verify.h"
+
 int _SB_STATUS_type = qRegisterMetaType<SB_STATUS>("SB_STATUS");
 
 struct SSbieAPI
@@ -2316,6 +2318,17 @@ bool CSbieAPI::GetDriverInfo(quint32 InfoClass, void* pBuffer, size_t Size)
 		memset(pBuffer, 0, Size);
 		return false;
 	}
+
+	// 绕过证书过期验证
+	if (InfoClass == (quint32)-1 && Size >= sizeof(SCertInfo)) {
+			SCertInfo* pCert = (SCertInfo*)pBuffer;
+			if (pCert->active) {
+					pCert->expired = 0;          // 清除过期标志
+					pCert->outdated = 0;         // 清除过时标志
+					pCert->expirers_in_sec = 0x7FFFFFFF;  // 设置最大过期时间
+			}
+	}
+
 	return true;
 }
 

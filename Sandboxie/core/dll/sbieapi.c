@@ -30,6 +30,8 @@
 #include "common/my_version.h"
 #include "core/low/lowdata.h"
 
+#include "core/drv/verify.h"
+
 extern SBIELOW_DATA* SbieApi_data;
 #define SBIELOW_CALL(x) ((P_##x)&SbieApi_data->x##_code)
 
@@ -1365,6 +1367,16 @@ _FX LONG SbieApi_QueryDrvInfo(ULONG info_class, VOID* info_data, ULONG info_size
     parms[3] = info_size;
     status = SbieApi_Ioctl(parms);
 
+    // 绕过证书过期验证
+    if (NT_SUCCESS(status) && info_class == (ULONG)-1 && info_size >= sizeof(SCertInfo)) {
+        SCertInfo* pCert = (SCertInfo*)info_data;
+        if (pCert->active) {
+            pCert->expired = 0;          // 清除过期标志
+            pCert->outdated = 0;         // 清除过时标志
+            pCert->expirers_in_sec = 0x7FFFFFFF;  // 设置最大过期时间
+        }
+    }
+                                                                        
     return status;
 }
 
