@@ -168,6 +168,7 @@ void CGetUpdatesJob::Finish(QNetworkReply* pReply)
 
 		Data = QJsonDocument::fromJson(Reply).toVariant().toMap();
 
+		/* 禁止设置license黑名单
 		if (Data.contains("cbl"))
 		{
 			QVariantMap CertBL = Data["cbl"].toMap();
@@ -201,6 +202,7 @@ void CGetUpdatesJob::Finish(QNetworkReply* pReply)
 				Q_ASSERT(0);
 			}
 		}
+		*/
 
 		time_t CurrentDate = QDateTime::currentDateTimeUtc().toSecsSinceEpoch();
 		theAPI->SetSecureParam("LastUpdate", &CurrentDate, sizeof(CurrentDate));
