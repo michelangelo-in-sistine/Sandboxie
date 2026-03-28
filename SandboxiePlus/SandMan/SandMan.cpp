@@ -3818,7 +3818,7 @@ SB_STATUS CSandMan::ConnectSbieImpl()
 		Status = SB_OK;
 	}
 	else if (Status.GetStatus() == 0xC000A000L /*STATUS_INVALID_SIGNATURE*/) {
-		QMessageBox::critical(this, "Sandboxie-Plus", tr("<b>ERROR:</b> The Sandboxie-Plus Manager (SandMan.exe) does not have a valid signature (SandMan.exe.sig). Please download a trusted release from the <a href=\"https://sandboxie-plus.com/go.php?to=sbie-get\">official Download page</a>."));
+//		QMessageBox::critical(this, "Sandboxie-Plus", tr("<b>ERROR:</b> The Sandboxie-Plus Manager (SandMan.exe) does not have a valid signature (SandMan.exe.sig). Please download a trusted release from the <a href=\"https://sandboxie-plus.com/go.php?to=sbie-get\">official Download page</a>."));
 		Status = SB_OK;
 	}
 
@@ -4817,9 +4817,9 @@ void CSandMan::OnAbout()
 
 		QString AboutCaption = tr(
 			"<h3>About Sandboxie-Plus</h3>"
-			"<p>Version %1(cr.ed by lvhf)</p>"
+			"<p>Version %1 (cr.ed by lvhf %2 %3)</p>"
 			"<p>" MY_COPYRIGHT_STRING "</p>"
-		).arg(theGUI->GetVersion(true));
+		).arg(theGUI->GetVersion(true)).arg(QStringLiteral(__DATE__)).arg(QStringLiteral(__TIME__));
 
 		QString CertInfo;
 		if (!g_Certificate.isEmpty())
